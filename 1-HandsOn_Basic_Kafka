@@ -1,0 +1,111 @@
+Pre Requirements:
+1. Download Apache-Kafka Standalone Mode
+	wget https://dlcdn.apache.org/kafka/3.4.0/kafka_2.13-3.4.0.tgz
+2. Install Net-tools
+	yum install -y net-tools
+3. Install Netcat
+	yum install nc -y
+4. Install Java 1.8
+	yum install java-1.8.0-openjdk-devel -y
+5. Setup NTP
+	-Install
+		yum install ntp -y
+	-Update ke server Indo
+		vi /etc/ntp.conf
+			server 0.id.pool.ntp.org
+			server 1.id.pool.ntp.org
+			server 2.id.pool.ntp.org
+			server 3.id.pool.ntp.org
+6. Set Up firewall
+	-open port for zookeeper each node
+		firewall-cmd --zone=public --add-port=2181/tcp --permanent
+		firewall-cmd --zone=public --add-port=2888/tcp --permanent
+		firewall-cmd --zone=public --add-port=3888/tcp --permanent
+	-open port for broker each node
+		firewall-cmd --zone=public --add-port=9092/tcp --permanent
+		
+	-restart firewall
+		firewall-cmd --reload
+
+==============================================================================================================
+
+1. Hands On Basic Kafka
+	- Add Zookeeper Config for All 3 Nodes :
+		-zookeeper.properties
+			dataDir=/opt/zookeeper
+			maxClientCnxns=0
+			tickTime=2000
+			initLimit=5
+			syncLimit=2
+			server.1=ans1.cfk.net:2888:3888
+			server.2=ans2.cfk.net:2888:3888
+			server.3=ans3.cfk.net:2888:3888
+		-Add id each zookeeper nodes
+			mkdir /opt/zookeeper
+			vi /opt/zookeeper/myid
+				1 #for zookeeper node 1=1, for zookeeper node 2=2, for zookeeper node 3=3, etc.
+		
+	- Add Kafka Broker Config for All 3 Nodes :
+		-server.properties
+			broker.id=0 #untuk ans1.cfk.net id=0, ans2.cfk.net id=1, ans3.cfk.net id=2
+			listeners=PLAINTEXT://0.0.0.0:9092
+			advertised.listeners=PLAINTEXT://ans1.cfk.net:9092 #sesuaikan host dengan tiap-tiap dns server
+	
+	1.1 Deploy systemd
+		-Zookeeper
+		vi /etc/systemd/system/zookeeper.service
+			[Unit]
+			Description=Zookeeper as a service
+
+			[Service]
+			User=root
+			ExecStart=/root/kafka/kafka_2.13-3.4.0/bin/zookeeper-server-start.service /root/kafka/kafka_2.13-3.4.0/config/zookeeper.properties
+			ExecStop=/root/kafka/kafka_2.13-3.4.0/bin/zookeeper-server-stop.sh
+			SuccessExitStatus=143
+
+			[Install]
+			WantedBy=multi-user.target
+		
+		-Kafka
+		vi /etc/systemd/system/kafka.service
+			[Unit]
+			Description=Kafka Server
+			Requires=zookeeper.service
+
+			[Service]
+			User=root
+			ExecStart=/root/kafka/kafka_2.13-3.4.0/bin/kafka-server-start.sh /root/kafka/kafka_2.13-3.4.0/config/server.properties
+			ExecStop=/root/kafka/kafka_2.13-3.4.0/bin/kafka-server-stop.sh
+			SuccessExitStatus=143
+
+			[Install]
+			WantedBy=multi-user.target
+			
+		-Apply Systemd
+			chmod +x zookeeper.service
+			chown root:root zookeeper.service
+			chmod +x kafka.service
+			chown root:root kafka.service
+			systemctl daemon-reload
+			systemctl enable zookeeper.service
+			systemctl enable kafka.service
+			systemctl start zookeeper
+			systemctl start kafka
+			systemctl status zookeeper
+			systemctl status kafka
+			
+	1.2 Create topic, produce, consume dgn CLI
+		-Create Topic
+			./kafka-topics.sh --create --topic percobaan1 --bootstrap-server ans1.cfk.net:9092
+			./kafka-topics.sh --list --bootstrap-server ans1.cfk.net:9092 | grep percobaan1
+		-Produce
+			./kafka-console-producer.sh --topic percobaan1 --bootstrap-server ans1.cfk.net:9092
+		-Consume
+			./kafka-console-consumer.sh --topic percobaan1 --bootstrap-server ans1.cfk.net:9092 --from-beginning
+	1.3 Check zookeeper quorum, dan kafka cluster id
+		-Zookeeper Quorum
+			echo srvr | nc localhost 2181
+		-Kafka Cluster ID
+			./zookeeper-shell.sh ans1.cfk.net:2181 ls /brokers/ids
+			
+	1.4 Write summary (Github)
