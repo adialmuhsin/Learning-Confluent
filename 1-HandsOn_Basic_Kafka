@@ -31,7 +31,7 @@ Pre Requirements:
 
 1. Hands On Basic Kafka
 	- Add Zookeeper Config for All 3 Nodes :
-		-zookeeper.properties
+		-zookeeper.properties (add/change this line)
 			dataDir=/opt/zookeeper
 			maxClientCnxns=0
 			tickTime=2000
@@ -46,8 +46,8 @@ Pre Requirements:
 				1 #for zookeeper node 1=1, for zookeeper node 2=2, for zookeeper node 3=3, etc.
 		
 	- Add Kafka Broker Config for All 3 Nodes :
-		-server.properties
-			broker.id=0 #untuk ans1.cfk.net id=0, ans2.cfk.net id=1, ans3.cfk.net id=2
+		-server.properties (add/change this line)
+			broker.id=0 #for ans1.cfk.net id=0, ans2.cfk.net id=1, ans3.cfk.net id=2
 			listeners=PLAINTEXT://0.0.0.0:9092
 			advertised.listeners=PLAINTEXT://ans1.cfk.net:9092 #adjust host with every dns server
 	
@@ -94,7 +94,7 @@ Pre Requirements:
 			systemctl status zookeeper
 			systemctl status kafka
 			
-	1.2 Create topic, produce, consume dgn CLI
+	1.2 Create topic, produce, consume with CLI
 		-Create Topic
 			./kafka-topics.sh --create --topic percobaan1 --bootstrap-server ans1.cfk.net:9092
 			./kafka-topics.sh --list --bootstrap-server ans1.cfk.net:9092 | grep percobaan1
