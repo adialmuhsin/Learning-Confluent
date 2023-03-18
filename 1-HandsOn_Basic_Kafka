@@ -10,7 +10,7 @@ Pre Requirements:
 5. Setup NTP
 	-Install
 		yum install ntp -y
-	-Update ke server Indo
+	-Update to server Indonesia
 		vi /etc/ntp.conf
 			server 0.id.pool.ntp.org
 			server 1.id.pool.ntp.org
@@ -49,7 +49,7 @@ Pre Requirements:
 		-server.properties
 			broker.id=0 #untuk ans1.cfk.net id=0, ans2.cfk.net id=1, ans3.cfk.net id=2
 			listeners=PLAINTEXT://0.0.0.0:9092
-			advertised.listeners=PLAINTEXT://ans1.cfk.net:9092 #sesuaikan host dengan tiap-tiap dns server
+			advertised.listeners=PLAINTEXT://ans1.cfk.net:9092 #adjust host with every dns server
 	
 	1.1 Deploy systemd
 		-Zookeeper
@@ -102,7 +102,7 @@ Pre Requirements:
 			./kafka-console-producer.sh --topic percobaan1 --bootstrap-server ans1.cfk.net:9092
 		-Consume
 			./kafka-console-consumer.sh --topic percobaan1 --bootstrap-server ans1.cfk.net:9092 --from-beginning
-	1.3 Check zookeeper quorum, dan kafka cluster id
+	1.3 Check zookeeper quorum, & kafka cluster id
 		-Zookeeper Quorum
 			echo srvr | nc localhost 2181
 		-Kafka Cluster ID
