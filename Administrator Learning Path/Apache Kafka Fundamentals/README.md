@@ -28,4 +28,4 @@
         - Course Expectations : To be Confluent Certified Administrator for Apache Kafka
     2. Motivasi
         > The Shift to Event-driven Systems has Already Begun.. 
-        ![Alt text](https://github.com/adialmuhsin/Learning-Confluent/blob/main/Administrator%20Learning%20Path/Apache%20Kafka%20Fundamentals/1.jpg)https://github.com/adialmuhsin/Learning-Confluent/blob/main/Administrator%20Learning%20Path/Apache%20Kafka%20Fundamentals/1.jpg)
+        ![Alt text](https://github.com/adialmuhsin/Learning-Confluent/blob/main/Administrator%20Learning%20Path/Apache%20Kafka%20Fundamentals/image.png)
