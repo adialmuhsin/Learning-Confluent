@@ -1,6 +1,6 @@
 # Apache Kafka Fundamentals
 
-     **Objektif :**
+    **Objektif :**
     Harapannya, kita dapat :
      - Kenapa "Event-driven" itu penting.
      - Menjelaskan konsep dari topic dan partisi.
@@ -28,4 +28,4 @@
         - Course Expectations : To be Confluent Certified Administrator for Apache Kafka
     2. Motivasi
         > The Shift to Event-driven Systems has Already Begun.. 
-        ![Alt text](image.png)
+        ![Alt text](https://github.com/adialmuhsin/Learning-Confluent/blob/main/Administrator%20Learning%20Path/Apache%20Kafka%20Fundamentals/image.png)
